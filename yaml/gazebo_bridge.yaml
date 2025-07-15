@@ -1,0 +1,77 @@
+#How to build the bridges!
+#1. Run your model in Gazebo, then run 'ros2 topic list' in the terminal
+#2. You will now see the ROS topics your Gazebo model might want to publish to (e.g. joint_states) or subscribe to (e.g. cmd_vel)
+#3. For each ROS topic you need to create a bridge for, now find its interface type using 'ros2 topic info /topic'
+#4. Make note of both the topic and the interface type it uses
+#5. Now use 'gz topic -l' in the terminal to get a list of the current Gazebo topics
+#6. For each Gazebo topic you need to create a bridge for, now find its interface type using 'gz topic -i -t /topic'
+#7. Again make note of the topics and the topic types you need to use...
+#8. Now visit this page: https://github.com/gazebosim/ros_gz/tree/ros2/ros_gz_bridge
+#9. On this page you will find the corresponding gazebo topic type and ros topic type and here you can map them together!
+
+
+#Used for Mobile Base
+- ros_topic_name: "/clock"
+  gz_topic_name: "/clock"
+  ros_type_name: "rosgraph_msgs/msg/Clock"
+  gz_type_name: "gz.msgs.Clock"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/joint_states"
+  gz_topic_name: "/world/empty/model/camlidarbot/joint_state"
+  ros_type_name: "sensor_msgs/msg/JointState"
+  gz_type_name: "gz.msgs.Model"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/tf"
+  gz_topic_name: "/model/camlidarbot/tf"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "gz.msgs.Pose_V"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/cmd_vel"
+  gz_topic_name: "/model/camlidarbot/cmd_vel"
+  ros_type_name: "geometry_msgs/msg/Twist"
+  gz_type_name: "gz.msgs.Twist"
+  direction: ROS_TO_GZ
+
+- ros_topic_name: "/scan"
+  gz_topic_name: "/lidar"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
+
+
+#Only used for NAV2
+- ros_topic_name: "/goal_pose"
+  gz_topic_name: "/model/camlidarbot/odometry"
+  ros_type_name: "nav_msgs/msg/Odometry"
+  gz_type_name: "gz.msgs.Odometry"
+  direction: GZ_TO_ROS
+
+
+#Other commonly used ones!
+
+# - ros_topic_name: "/camera/image_raw"
+#   gz_topic_name: "/camera_image"
+#   ros_type_name: "sensor_msgs/msg/Image"
+#   gz_type_name: "gz.msgs.Image"
+#   direction: GZ_TO_ROS
+
+# - ros_topic_name: "/scan"
+#   gz_topic_name: "/lidar_scan"
+#   ros_type_name: "sensor_msgs/msg/LaserScan"
+#   gz_type_name: "gz.msgs.LaserScan"
+#   direction: GZ_TO_ROS
+
+# - ros_topic_name: "/odom"
+#   gz_topic_name: "/model/my_robot/odometry" # Adjust 'my_robot' to your robot's model name in Gazebo
+#   ros_type_name: "nav_msgs/msg/Odometry"
+#   gz_type_name: "gz.msgs.Odometry"
+#   direction: GZ_TO_ROS
+
+# - ros_topic_name: "/robot_joint_states"
+#   gz_topic_name: "/model/my_robot/joint_state" # Often published by Gazebo's Diff Drive or other plugins
+#   ros_type_name: "sensor_msgs/msg/JointState"
+#   gz_type_name: "gz.msgs.Model" # Or gz.msgs.JointState, depending on how Gazebo publishes it
+#   direction: GZ_TO_ROS
