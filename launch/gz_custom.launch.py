@@ -18,7 +18,7 @@ def generate_launch_description():
     robot_package = FindPackageShare('camlidarbot_description') # -----> Change me!
     robot_name = 'camlidarbot' # Verify this matches your robot's actual spawned name/tf_prefix
     robot_urdf_file_name = 'robot.urdf.xacro'
-    rviz_config_file_name = 'camlidarbot_config_withLidar.rviz'
+    rviz_config_file_name = 'camlidarbot_config_with-Lidar-and-Camera.rviz'
     custom_world_file_name = 'camlidarbot_world1.sdf'
 
     parent_of_share_path = os.path.dirname(robot_description_path)

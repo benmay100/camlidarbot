@@ -4,6 +4,7 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+<!-- =============== DiffDrive =============== -->
     <gazebo>
         <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
             <left_joint>rear_left_wheel_joint</left_joint>
@@ -27,16 +28,19 @@
         </plugin>
     </gazebo>
 
+<!--=========================================-->
 
-    <!-- IF USING SENSORS MUST INCLUDE THE BELOW -->
+
+<!-- IF USING SENSORS MUST INCLUDE THE BELOW -->
     <gazebo>
         <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
             <render_engine>ogre2</render_engine>
         </plugin>
     </gazebo>
-    <!--=========================================-->
 
 
+
+<!-- =========== Lidar Sensor ============ -->
     <gazebo reference="lidar_link">
         <sensor name='gpu_lidar' type='gpu_lidar'>"
             <pose relative_to='lidar_link'>0 0 0 0 0 0</pose>
@@ -72,5 +76,37 @@
             </lidar>
         </sensor>
     </gazebo>
+<!--=========================================-->
+
+
+<!-- =========== Camera Sensor ============ -->
+    <gazebo reference="camera_link">
+        <sensor name="camera" type="camera">
+            <camera>
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>640</width>
+                    <height>480</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.1</near>
+                    <far>15</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise>
+                <optical_frame_id>camera_optical_link</optical_frame_id>
+                <camera_info_topic>camera/camera_info</camera_info_topic>
+            </camera>
+            <always_on>1</always_on>
+            <update_rate>20</update_rate>
+            <visualize>true</visualize>
+            <topic>camera/image_raw</topic>
+        </sensor>
+    </gazebo>
+<!--=========================================-->
 
 </robot>

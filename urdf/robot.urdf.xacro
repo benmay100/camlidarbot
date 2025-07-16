@@ -2,7 +2,9 @@
 
 <robot name="camlidarbot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:include filename="modules/camlidarbot.xacro" />
+    <xacro:include filename="modules/chassis_and_wheels.xacro" />
+    <xacro:include filename="modules/camera.xacro" />
+    <xacro:include filename="modules/lidar.xacro" />
     <xacro:include filename="gazebo_tags/gazebo_plugins.xacro" />
     <xacro:include filename="gazebo_tags/gazebo_properties.xacro" />
 

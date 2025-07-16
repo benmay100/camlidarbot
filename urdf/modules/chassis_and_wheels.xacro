@@ -4,23 +4,6 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-
-  <!-- Joint map -->
-  <!--<link name="map"/>
-  <joint name="map_joint" type="static">
-      <parent link="map" />
-      <child link="odom" />
-      <origin xyz="0 0 0" rpy="0 0 0" />
-  </joint>-->
-
-  <!-- Joint odom -->
-  <!--<link name="odom"/>
-  <joint name="odom_joint" type="static">
-      <parent link="odom" />
-      <child link="base_footprint" />
-      <origin xyz="0 0 0" rpy="0 0 0" />
-  </joint>-->
-    
   <!-- Link base footprint -->
   <link name="base_footprint"/>
   <!-- Joint base footprint -->
@@ -54,70 +37,6 @@
       </geometry>
     </collision>
   </link>
-
-  <!-- Link lidar -->
-  <link name="lidar_link">
-    <inertial>
-      <origin xyz="-4.82929e-19 1.36409e-18 0.00735149" rpy="0 0 0"/>
-      <mass value="0.027159"/>
-      <inertia ixx="4.77113e-06" ixy="0" ixz="0" iyy="4.77113e-06" iyz="0" izz="8.40399e-06"/>
-    </inertial>
-    <!-- Part lidar -->
-    <visual>
-      <origin xyz="0 -1.53081e-19 0" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://camlidarbot_description/assets/lidar.stl"/>
-      </geometry>
-      <material name="lidar_material">
-        <color rgba="0.301961 0.301961 0.301961 1"/>
-      </material>
-    </visual>
-    <collision>
-      <origin xyz="0 -1.53081e-19 0" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://camlidarbot_description/assets/lidar.stl"/>
-      </geometry>
-    </collision>
-  </link>
-  <!-- Joint from chassis to lidar -->
-  <joint name="lidar_joint" type="fixed">
-    <origin xyz="-0.0440219 2.44392e-17 0.09" rpy="0 -0 0"/>
-    <parent link="chassis_link"/>
-    <child link="lidar_link"/>
-  </joint>
-
-
- 
-  <!-- Link camera -->
-  <link name="camera_link">
-    <inertial>
-      <origin xyz="-5.3242e-19 -6.85029e-19 0.00414969" rpy="0 0 0"/>
-      <mass value="0.00103549"/>
-      <inertia ixx="3.58884e-08" ixy="0" ixz="0" iyy="4.57792e-08" iyz="0" izz="1.57304e-08"/>
-    </inertial>
-    <!-- Part camera -->
-    <visual>
-      <origin xyz="0 0 0" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://camlidarbot_description/assets/camera.stl"/>
-      </geometry>
-      <material name="camera_material">
-        <color rgba="0.729412 0.25098 0.105882 1"/>
-      </material>
-    </visual>
-    <collision>
-      <origin xyz="0 0 0" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://camlidarbot_description/assets/camera.stl"/>
-      </geometry>
-    </collision>
-  </link>
-  <!-- Joint from chassis to camera -->
-  <joint name="camera_joint" type="fixed">
-    <origin xyz="0.0811976 0 0.05" rpy="0 -0 1.5708"/>
-    <parent link="chassis_link"/>
-    <child link="camera_link"/>
-  </joint>
 
 
   <!-- Link rear_right_wheel -->
