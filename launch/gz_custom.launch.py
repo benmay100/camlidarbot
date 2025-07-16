@@ -18,7 +18,7 @@ def generate_launch_description():
     robot_package = FindPackageShare('camlidarbot_description') # -----> Change me!
     robot_name = 'camlidarbot' # Verify this matches your robot's actual spawned name/tf_prefix
     robot_urdf_file_name = 'robot.urdf.xacro'
-    rviz_config_file_name = 'camlidarbot_config2.rviz'
+    rviz_config_file_name = 'camlidarbot_config_withLidar.rviz'
     custom_world_file_name = 'camlidarbot_world1.sdf'
 
     parent_of_share_path = os.path.dirname(robot_description_path)
@@ -83,7 +83,8 @@ def generate_launch_description():
         executable='robot_state_publisher',
         parameters=[{
             'robot_description': robot_description_content,
-            'use_sim_time': use_sim_time
+            'use_sim_time': use_sim_time,
+            'frame_prefix': robot_name + '/' 
         }]
     )
 
@@ -107,7 +108,7 @@ def generate_launch_description():
 # ========================================================= #
 
 
-# ======================== GAZEBO ========================== #
+# ============== GAZEBO - SETUP AND LAUNCH ================ #
 
     
     # Include the Gazebo Sim launch file (using gz_sim.launch.py)
@@ -152,7 +153,8 @@ def generate_launch_description():
 
 # ========================================================= #
 
-# ================= ROS / GAZEBO BRIDGES =================== #
+
+# ================= GAZEBO BRIDGES & SENSOR SETUP =================== #
 
     bridge_config_file = os.path.join(robot_description_path, 'yaml', 'gazebo_bridge.yaml')
 
@@ -166,6 +168,30 @@ def generate_launch_description():
         output='screen'
     )
 
+    #THESE ARE SPECIFIC TO GETTING THE LIDAR WORKING:
+    
+    #publishes a static transform for the purpose of getting lidar data across to RVIZ
+    lidar_tf_publisher_node = Node(   
+    package='tf2_ros',
+    executable='static_transform_publisher',
+    name='lidar_gpu_frame_broadcaster',
+    output='screen',
+    arguments=['0', '0', '0', '0', '0', '0', '1', # x,y,z, qx,qy,qz,qw (identity quaternion)
+               f'{robot_name}/lidar_link', # Parent: This should be the NEWLY prefixed lidar_link (e.g., camlidarbot/lidar_link)
+               f'{robot_name}/base_footprint/gpu_lidar'] # Child: This is your actual LaserScan frame_id
+    )
+
+    # New Node: Static Transform Publisher for map to odom
+    # This places your robot's 'odom' frame at the origin of the 'map' frame.
+    map_odom_publisher_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='map_odom_broadcaster',
+        output='screen',
+        # arguments: x y z qx qy qz qw parent_frame_id child_frame_id
+        arguments=['0', '0', '0', '0', '0', '0', '1', 'map', f'{robot_name}/odom']
+    )
+
 
 # ========================================================= #
 
@@ -174,6 +200,8 @@ def generate_launch_description():
         rviz_config_path_arg,
         use_sim_time_declare,
         set_gz_sim_resource_path, # This must come before any nodes that rely on it
+        lidar_tf_publisher_node,
+        map_odom_publisher_node,
         robot_state_publisher_node,
         #joint_state_publisher_gui_node,
         gazebo_launch,
