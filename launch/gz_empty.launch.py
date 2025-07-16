@@ -13,8 +13,13 @@ def generate_launch_description():
 
 # ================== ENVIRONMENT SETUP =================== #
 
+    #CHANGE THESE TO BE RELEVANT TO THE SPECIFIC PACKAGE
     robot_description_path = get_package_share_directory('camlidarbot_description')  # -----> Change me!
-
+    robot_package = FindPackageShare('camlidarbot_description') # -----> Change me!
+    robot_name = 'camlidarbot' # Verify this matches your robot's actual spawned name/tf_prefix
+    robot_urdf_file_name = 'robot.urdf.xacro'
+    rviz_config_file_name = 'camlidarbot_config2.rviz'
+    
     parent_of_share_path = os.path.dirname(robot_description_path)
 
     # --- Set GZ_SIM_RESOURCE_PATH / GAZEBO_MODEL_PATH ---
@@ -27,12 +32,14 @@ def generate_launch_description():
         ]
     )
 
-    # --- Launch Arguments (Optional but good practice) ---
-    use_sim_time = DeclareLaunchArgument(
+    # --- Use sim time setup ---
+    use_sim_time_declare = DeclareLaunchArgument(
         'use_sim_time',
         default_value='true',
         description='Use simulation (Gazebo) clock if true'
     )
+
+    use_sim_time = LaunchConfiguration('use_sim_time')
     
 
 # ========================================================= #
@@ -47,7 +54,7 @@ def generate_launch_description():
         default_value=PathJoinSubstitution([
             FindPackageShare('camlidarbot_description'), # -----> Change me!
             'urdf',
-            'robot.urdf.xacro'  # -----> Change me!
+            robot_urdf_file_name
         ]),
         description='Path to the URDF file for the robot description.'
     )
@@ -57,7 +64,7 @@ def generate_launch_description():
         default_value=PathJoinSubstitution([
             FindPackageShare('camlidarbot_description'),  # -----> Change me!
             'rviz',
-            'camlidarbot_config.rviz'  # -----> Change me!
+            rviz_config_file_name
         ]),
         description='Path to the RViz configuration file.'
     )
@@ -74,7 +81,7 @@ def generate_launch_description():
         executable='robot_state_publisher',
         parameters=[{
             'robot_description': robot_description_content,
-            'use_sim_time': LaunchConfiguration('use_sim_time')
+            'use_sim_time':  use_sim_time
         }]
     )
 
@@ -84,7 +91,8 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         output='screen',
-        arguments=['-d', LaunchConfiguration('rviz_config_path')]
+        arguments=['-d', LaunchConfiguration('rviz_config_path')],
+        parameters=[{'use_sim_time': use_sim_time}] 
     )
 
     # Joint State Publisher GUI node - ONLY UNCOMMENT IF NOT RUNNING ANY ROS/GAZEBO BRIDGE!!!
@@ -109,16 +117,19 @@ def generate_launch_description():
 
     gazebo_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([gz_sim_launch_file]),
-        launch_arguments={'gz_args': '-r empty.sdf'}.items() # Use -r for 'run' and loads the world.
+        launch_arguments={
+                        'gz_args': '-r empty.sdf',
+                        'use_sim_time': use_sim_time,
+                        'on_exit_shutdown': 'True'            
+                        }.items() # Use -r for 'run' and loads the world.
     )
 
-    # This is the corrected way to spawn the entity using ros_gz_sim's 'create' executable
-    # It reads the robot_description from the parameter server and spawns it.
+    # Reads the robot_description from the parameter server and spawns it.
     spawn_entity_node = Node(
         package='ros_gz_sim',
         executable='create',
         arguments=[
-            '-name', 'camlidarbot',   # -----> Change me!
+            '-name', robot_name, 
             '-topic', 'robot_description', # Read URDF from /robot_description topic
             '-x', '0', # Default spawn location
             '-y', '0',

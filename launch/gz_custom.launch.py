@@ -12,7 +12,14 @@ def generate_launch_description():
 
 # ================== ENVIRONMENT SETUP =================== #
 
+
+    #CHANGE THESE TO BE RELEVANT TO THE SPECIFIC PACKAGE
     robot_description_path = get_package_share_directory('camlidarbot_description')  # -----> Change me!
+    robot_package = FindPackageShare('camlidarbot_description') # -----> Change me!
+    robot_name = 'camlidarbot' # Verify this matches your robot's actual spawned name/tf_prefix
+    robot_urdf_file_name = 'robot.urdf.xacro'
+    rviz_config_file_name = 'camlidarbot_config2.rviz'
+    custom_world_file_name = 'camlidarbot_world1.sdf'
 
     parent_of_share_path = os.path.dirname(robot_description_path)
 
@@ -20,13 +27,13 @@ def generate_launch_description():
     set_gz_sim_resource_path = SetEnvironmentVariable(
         name='GZ_SIM_RESOURCE_PATH', 
         value=[
-            os.environ.get('GZ_SIM_RESOURCE_PATH', ''), # Keep existing paths
+            os.environ.get('GZ_SIM_RESOURCE_PATH', ''),
             os.path.pathsep, # Separator for paths
             parent_of_share_path # Add the path containing your package's share directory
         ]
     )
 
-    # --- Launch Arguments (Optional but good practice) ---
+    # --- Use sim time setup ---
     use_sim_time_declare = DeclareLaunchArgument(
         'use_sim_time',
         default_value='true',
@@ -34,6 +41,8 @@ def generate_launch_description():
     )
 
     use_sim_time = LaunchConfiguration('use_sim_time')
+
+
 
 
 # ========================================================= #
@@ -45,9 +54,9 @@ def generate_launch_description():
     urdf_path_arg = DeclareLaunchArgument(
         'urdf_path',
         default_value=PathJoinSubstitution([
-            FindPackageShare('camlidarbot_description'), # -----> Change me!
+            robot_package,
             'urdf',
-            'robot.urdf.xacro'  # -----> Change me!
+            robot_urdf_file_name
         ]),
         description='Path to the URDF file for the robot description.'
     )
@@ -55,9 +64,9 @@ def generate_launch_description():
     rviz_config_path_arg = DeclareLaunchArgument(
         'rviz_config_path',
         default_value=PathJoinSubstitution([
-            FindPackageShare('camlidarbot_description'),  # -----> Change me!
+            robot_package,
             'rviz',
-            'camlidarbot_config2.rviz'  # -----> Change me!
+            rviz_config_file_name
         ]),
         description='Path to the RViz configuration file.'
     )
@@ -111,9 +120,9 @@ def generate_launch_description():
 
     # Define the path to your custom world file
     custom_world_path = PathJoinSubstitution([
-        FindPackageShare('camlidarbot_description'), # ---> Change me!
+        robot_package,
         'worlds',
-        'camlidarbot_world1.sdf'  # ---> Change me!
+        custom_world_file_name
     ])
 
     # Construct the gz_args to the custom world as a single string
@@ -123,16 +132,16 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([gz_sim_launch_file]),
         launch_arguments={'gz_args': gz_args_value, 
                           'use_sim_time': use_sim_time,
-                          'on_exit_shutdown': 'True', 
+                          'on_exit_shutdown': 'True' 
                           }.items()
     )
 
-    # It reads the robot_description from the parameter server and spawns it.
+    # Reads the robot_description from the parameter server and spawns it.
     spawn_entity_node = Node(
         package='ros_gz_sim',
         executable='create',
         arguments=[
-            '-name', 'camlidarbot',   # -----> Change me!
+            '-name', robot_name, 
             '-topic', 'robot_description', # Read URDF from /robot_description topic
             '-x', '0', # Default spawn location
             '-y', '0',
@@ -143,7 +152,7 @@ def generate_launch_description():
 
 # ========================================================= #
 
-# ================= ROS / GAZEBO BRIDGE =================== #
+# ================= ROS / GAZEBO BRIDGES =================== #
 
     bridge_config_file = os.path.join(robot_description_path, 'yaml', 'gazebo_bridge.yaml')
 
@@ -170,5 +179,5 @@ def generate_launch_description():
         gazebo_launch,
         spawn_entity_node,
         ros_gz_bridge,
-        rviz2_node,
-    ])
+        rviz2_node
+        ])
