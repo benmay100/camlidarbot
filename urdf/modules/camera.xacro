@@ -15,7 +15,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/camera.stl"/>
+        <mesh filename="package://${package_name}/assets/camera.stl"/>
       </geometry>
       <material name="camera_material">
         <color rgba="0.729412 0.25098 0.105882 1"/>
@@ -24,7 +24,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/camera.stl"/>
+        <mesh filename="package://${package_name}/assets/camera.stl"/>
       </geometry>
     </collision>
   </link>

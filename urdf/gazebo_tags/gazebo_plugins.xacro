@@ -13,9 +13,8 @@
             <right_joint>front_right_wheel_joint</right_joint>
             <wheel_separation>0.215</wheel_separation>
             <wheel_radius>0.06</wheel_radius>
-            <frame_id>camlidarbot/odom</frame_id> <!--Best to use prefixes ('camlidarbot' for example) and to set the prefix on the RVIZ config too-->
-            <child_frame_id>camlidarbot/base_footprint</child_frame_id> <!--Best to use prefixes ('camlidarbot' for example) and to set the prefix on the RVIZ config too-->
-            <!--<topic>cmd_vel</topic> -->
+            <frame_id>${robot_name}/odom</frame_id> <!--Best to use prefixes and to set the prefix on the RVIZ config too, see xacro_properties.xacro for where to change these -->
+            <child_frame_id>${robot_name}/base_footprint</child_frame_id>  <!--Best to use prefixes and to set the prefix on the RVIZ config too, see xacro_properties.xacro for where to change these -->
         </plugin>
     </gazebo>
 

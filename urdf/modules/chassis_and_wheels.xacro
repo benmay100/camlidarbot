@@ -24,7 +24,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/chassis.stl"/>
+        <mesh filename="package://${package_name}/assets/chassis.stl"/>
       </geometry>
       <material name="chassis_material">
         <color rgba="0.231373 0.380392 0.705882 1"/>
@@ -33,7 +33,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/chassis.stl"/>
+        <mesh filename="package://${package_name}/assets/chassis.stl"/>
       </geometry>
     </collision>
   </link>
@@ -50,7 +50,7 @@
     <visual>
       <origin xyz="0 0 0.0225" rpy="-1.5708 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/wheel.stl"/>
+        <mesh filename="package://${package_name}/assets/wheel.stl"/>
       </geometry>
       <material name="wheel_material">
         <color rgba="0.647059 0.647059 0.647059 1"/>
@@ -59,7 +59,7 @@
     <collision>
       <origin xyz="0 0 0.0225" rpy="-1.5708 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/wheel.stl"/>
+        <mesh filename="package://${package_name}/assets/wheel.stl"/>
       </geometry>
     </collision>
   </link>
@@ -83,7 +83,7 @@
     <visual>
       <origin xyz="0 0 0.0225" rpy="-1.5708 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/wheel.stl"/>
+        <mesh filename="package://${package_name}/assets/wheel.stl"/>
       </geometry>
       <material name="wheel_2_material">
         <color rgba="0.647059 0.647059 0.647059 1"/>
@@ -92,7 +92,7 @@
     <collision>
       <origin xyz="0 0 0.0225" rpy="-1.5708 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/wheel.stl"/>
+        <mesh filename="package://${package_name}/assets/wheel.stl"/>
       </geometry>
     </collision>
   </link>
@@ -116,7 +116,7 @@
     <visual>
       <origin xyz="0 0 0.0225" rpy="-1.5708 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/wheel.stl"/>
+        <mesh filename="package://${package_name}/assets/wheel.stl"/>
       </geometry>
       <material name="wheel_3_material">
         <color rgba="0.647059 0.647059 0.647059 1"/>
@@ -125,7 +125,7 @@
     <collision>
       <origin xyz="0 0 0.0225" rpy="-1.5708 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/wheel.stl"/>
+        <mesh filename="package://${package_name}/assets/wheel.stl"/>
       </geometry>
     </collision>
   </link>
@@ -149,7 +149,7 @@
     <visual>
       <origin xyz="0 0 0.0225" rpy="-1.5708 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/wheel.stl"/>
+        <mesh filename="package://${package_name}/assets/wheel.stl"/>
       </geometry>
       <material name="wheel_4_material">
         <color rgba="0.647059 0.647059 0.647059 1"/>
@@ -158,7 +158,7 @@
     <collision>
       <origin xyz="0 0 0.0225" rpy="-1.5708 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/wheel.stl"/>
+        <mesh filename="package://${package_name}/assets/wheel.stl"/>
       </geometry>
     </collision>
   </link>

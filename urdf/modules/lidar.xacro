@@ -15,7 +15,7 @@
     <visual>
       <origin xyz="0 -1.53081e-19 0" rpy="0 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/lidar.stl"/>
+        <mesh filename="package://${package_name}/assets/lidar.stl"/>
       </geometry>
       <material name="lidar_material">
         <color rgba="0.301961 0.301961 0.301961 1"/>
@@ -24,7 +24,7 @@
     <collision>
       <origin xyz="0 -1.53081e-19 0" rpy="0 -0 0"/>
       <geometry>
-        <mesh filename="package://camlidarbot_description/assets/lidar.stl"/>
+        <mesh filename="package://${package_name}/assets/lidar.stl"/>
       </geometry>
     </collision>
   </link>
